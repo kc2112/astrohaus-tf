@@ -1,0 +1,18 @@
+{
+    "Comment": "Process Astro Image from S3 - Pass-through",
+    "StartAt": "PassThrough",
+    "States": {
+        "PassThrough": {
+            "Type": "Pass",
+            "Comment": "Map S3 event fields to output with the same parameter names",
+            "Parameters": {
+                "bucket.$": "$.detail.bucket.name",
+                "size.$": "$.detail.object.size",
+                "etag.$": "$.detail.object.etag",
+                "key.$": "$.detail.object.key",
+                "event_time.$": "$.time"
+            },
+            "End": true
+        }
+    }
+}
