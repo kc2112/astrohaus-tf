@@ -1,0 +1,11 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "apiLambdaExecutePolicy",
+      "Effect": "Allow",
+      "Action": "execute-api:Invoke",
+      "Resource": "arn:aws:amplify:us-east-1:774552523771:apps/d31tnaz07gfkyv:execute-api:*:*/*/*/*"
+    }
+  ]
+}

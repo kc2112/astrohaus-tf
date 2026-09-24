@@ -1,0 +1,18 @@
+{
+  "name": "aws-lambda-layer",
+  "version": "1.0.1",
+  "scripts": {
+    "test": "echo \"no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.888.0",
+    "@aws-sdk/client-dynamodb": "^3.993.0",
+    "@aws-sdk/lib-dynamodb": "^3.993.0",
+    "exifreader": "^4.36.2",
+    "axios": "^1.18.1",
+    "sharp": "^0.35.3"
+  }
+}

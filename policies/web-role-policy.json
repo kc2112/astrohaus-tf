@@ -1,0 +1,13 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+  {
+    "Sid": "AllowInvokeApiGatewayFromAmplifySSR",
+    "Effect": "Allow",
+    "Principal": {
+      "Service": "amplify.amazonaws.com"
+  },
+    "Action": "sts:AssumeRole"
+  }
+]
+}

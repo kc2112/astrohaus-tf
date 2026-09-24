@@ -1,0 +1,68 @@
+{
+  "Comment": "Process Astro Image from S3 - Parallel Only",
+  "StartAt": "DebugInput",
+  "States": {
+    "DebugInput": {
+      "Type": "Pass",
+      "Comment": "Debug - capture raw input to see actual event structure",
+      "Result": "Raw input captured - check execution details",
+      "ResultPath": "$.debug_info",
+      "Next": "ParseInput"
+    },
+
+    "ParseInput": {
+      "Type": "Pass",
+      "Parameters": {
+        "bucket.$": "$.detail.bucket.name",
+        "size.$": "$.detail.object.size",
+        "etag.$": "$.detail.object.etag",
+        "key.$": "$.detail.object.key",
+        "event_time.$": "$.time"
+      },
+      "ResultPath": "$.payload",
+      "Next": "ParallelProcessing"
+    },
+
+    "ParallelProcessing": {
+      "Type": "Parallel",
+      "Branches": [
+        {
+          "StartAt": "store_image_metadata_lambda",
+          "States": {
+            "store_image_metadata_lambda": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "Parameters": {
+                "FunctionName": "${store_image_metadata_lambda_arn}",
+                "Payload.$": "$.payload"
+              },
+              "ResultPath": "$.store_image_metadata_lambda_result",
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "scale_image_metadata_lambda",
+          "States": {
+            "scale_image_metadata_lambda": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "Parameters": {
+                "FunctionName": "${scale_image_metadata_lambda_arn}",
+                "Payload.$": "$.payload"
+              },
+              "ResultPath": "$.scale_image_metadata_lambda_result",
+              "End": true
+            }
+          }
+        }
+      ],
+      "ResultPath": "$.parallel_results",
+      "Next": "Success"
+    },
+
+    "Success": {
+      "Type": "Succeed"
+    }
+  }
+}
